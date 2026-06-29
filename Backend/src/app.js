@@ -13,6 +13,8 @@ const submissionRoutes   = require('./routes/submissions');
 const approvalRoutes     = require('./routes/approvals');
 const newsletterRoutes   = require('./routes/newsletters');
 const notificationRoutes = require('./routes/notifications');
+const adminRoutes        = require('./routes/admin');
+const userRoutes         = require('./routes/users');
 
 const app = express();
 
@@ -48,6 +50,8 @@ app.use('/api/submissions',   submissionRoutes);
 app.use('/api/approvals',     approvalRoutes);
 app.use('/api/newsletters',   newsletterRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/admin',         adminRoutes);
+app.use('/api/users',         userRoutes);
 
 // ── Health Check ──
 app.get('/api/health', (req, res) => {

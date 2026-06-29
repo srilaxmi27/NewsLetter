@@ -138,18 +138,13 @@ CREATE TABLE IF NOT EXISTS Notifications (
 -- SEED DATA
 -- ─────────────────────────────────────────────
 
--- Departments
-INSERT INTO Departments (name) VALUES ('AIML'), ('CSE')
+-- Departments — AIML only
+INSERT INTO Departments (name) VALUES ('AIML')
 ON CONFLICT (name) DO NOTHING;
 
--- Demo Users
--- Note: No passwords — mock auth only for MVP
+-- Dev users for AIML (used only when DEV_MODE=true)
 INSERT INTO Users (id, department_id, name, email, role) VALUES
-  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'AIML'), 'Riya Sharma',   'riya.aiml@newsflow.dev',    'Student'),
-  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'AIML'), 'Arjun Mehta',   'arjun.aiml@newsflow.dev',   'Student'),
-  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'AIML'), 'Dr. Priya Nair','priya.aiml@newsflow.dev',   'Faculty'),
-  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'AIML'), 'Admin AIML',    'admin.aiml@newsflow.dev',   'Admin'),
-  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'CSE'),  'Sneha Patel',   'sneha.cse@newsflow.dev',    'Student'),
-  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'CSE'),  'Dr. Ramesh Kumar','ramesh.cse@newsflow.dev', 'Faculty'),
-  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'CSE'),  'Admin CSE',     'admin.cse@newsflow.dev',    'Admin')
+  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'AIML'), 'Student AIML',  'student.aiml@newsletter.dev', 'Student'),
+  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'AIML'), 'Faculty AIML',  'faculty.aiml@newsletter.dev', 'Faculty'),
+  (gen_random_uuid(), (SELECT id FROM Departments WHERE name = 'AIML'), 'Admin AIML',    'admin.aiml@newsletter.dev',   'Admin')
 ON CONFLICT (email) DO NOTHING;

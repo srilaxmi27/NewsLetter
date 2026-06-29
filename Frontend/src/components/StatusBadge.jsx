@@ -9,7 +9,7 @@ const STATUS_MAP = {
 };
 
 const StatusBadge = ({ status }) => (
-  <span className={STATUS_MAP[status] || 'badge bg-surface-100 text-surface-500'}>
+  <span className={STATUS_MAP[status] || 'badge bg-ink-100 text-ink-400'}>
     {status}
   </span>
 );

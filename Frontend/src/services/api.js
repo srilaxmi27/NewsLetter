@@ -5,18 +5,28 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 const api = axios.create({
   baseURL:         API_BASE,
   withCredentials: true,
-  timeout:         10000, // 10s — prevents requests hanging indefinitely
+  timeout:         20000, // 20 s — Neon serverless can take a few seconds to wake
 });
 
-// Response interceptor: on 401 the session has expired — clear local state
-// (the AuthContext will notice user is null and redirect to /login)
+// Auth routes — never trigger global logout on failure
+const AUTH_PATHS = ['/auth/profile', '/auth/google', '/auth/dev-login', '/auth/dev-logout'];
+
 api.interceptors.response.use(
-  (response) => response,
+  (res) => res,
   (error) => {
-    if (error.response?.status === 401) {
-      // Dispatch a custom event so AuthContext can react without tight coupling
+    const url        = error.config?.url || '';
+    const isAuthRoute = AUTH_PATHS.some(p => url.includes(p));
+
+    if (error.response?.status === 401 && !isAuthRoute) {
       window.dispatchEvent(new CustomEvent('auth:expired'));
     }
+
+    // Annotate network errors with a friendlier message so UI can display it
+    if (!error.response) {
+      error.isNetwork = true;
+      error.friendlyMessage = 'Could not reach the server. Check your connection.';
+    }
+
     return Promise.reject(error);
   }
 );

@@ -14,7 +14,7 @@ const pool = new Pool({
   // connection storms under rapid concurrent requests).
   max:              5,    // max simultaneous connections
   idleTimeoutMillis: 30000, // close idle connections after 30s
-  connectionTimeoutMillis: 5000, // fail fast if pool is exhausted
+  connectionTimeoutMillis: 8000, // wait up to 8 s for a connection (Neon can be slow to wake)
 });
 
 pool.on('error', (err) => {

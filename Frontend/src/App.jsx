@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './hooks/useAuth';
+import { ToastProvider } from './components/Toast';
 import DashboardLayout from './layouts/DashboardLayout';
 
 import LoginPage          from './pages/Auth/LoginPage';
@@ -11,6 +12,7 @@ import ApprovalsPage      from './pages/Approvals/ApprovalsPage';
 import GenerationPage     from './pages/Generation/GenerationPage';
 import PublicationPage    from './pages/Publication/PublicationPage';
 import ArchivesPage       from './pages/Archives/ArchivesPage';
+import ProfilePage        from './pages/Profile/ProfilePage';
 
 const PrivateRoute = ({ children, adminOnly = false }) => {
   const { user } = useAuth();
@@ -32,17 +34,20 @@ const AppRoutes = () => {
       <Route path="/generation"  element={<PrivateRoute adminOnly><GenerationPage /></PrivateRoute>} />
       <Route path="/publication" element={<PrivateRoute adminOnly><PublicationPage /></PrivateRoute>} />
       <Route path="/archives"    element={<PrivateRoute><ArchivesPage /></PrivateRoute>} />
+      <Route path="/profile"     element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
       <Route path="*"            element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 };
 
 const App = () => (
-  <AuthProvider>
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
-  </AuthProvider>
+  <ToastProvider>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
+  </ToastProvider>
 );
 
 export default App;
